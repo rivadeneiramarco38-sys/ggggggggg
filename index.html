@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Imágenes IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .loader { border-top-color: #3498db; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col items-center justify-center p-5">
+
+    <div class="max-w-2xl w-full bg-gray-800 p-8 rounded-2xl shadow-2xl">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-400">Generador de Imágenes IA</h1>
+        
+        <div class="space-y-4">
+            <input type="password" id="apiKey" placeholder="Pega tu OpenAI API Key aquí" 
+                   class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500">
+            
+            <textarea id="prompt" rows="3" placeholder="Describe la imagen que quieres crear..." 
+                      class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500"></textarea>
+            
+            <button onclick="generateImage()" id="btnGenerate"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300">
+                Generar Imagen
+            </button>
+        </div>
+
+        <div id="loading" class="hidden mt-6 flex flex-col items-center">
+            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+            <p>La IA está dibujando para ti...</p>
+        </div>
+
+        <div id="result" class="mt-8 hidden">
+            <img id="outputImage" src="" alt="Imagen generada" class="w-full rounded-lg shadow-lg border-2 border-gray-600">
+            <a id="downloadBtn" href="#" download="ia_imagen.png" 
+               class="block text-center mt-4 text-sm text-blue-400 hover:underline">Descargar imagen</a>
+        </div>
+    </div>
+
+    <script>
+        async function generateImage() {
+            const apiKey = document.getElementById('apiKey').value;
+            const prompt = document.getElementById('prompt').value;
+            const btn = document.getElementById('btnGenerate');
